@@ -47,7 +47,7 @@
 	<distributionManagement>
     <snapshotRepository>
          <id>deployment</id>
-         <url>http://192.168.29.23:8081//repository/ksrepo/</url>
+         <url>http://192.168.29.23:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
 </distributionManagement>
 	
