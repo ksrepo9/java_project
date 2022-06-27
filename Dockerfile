@@ -14,7 +14,7 @@ RUN yum install wget update java -y
 COPY shell.sh .
 RUN chmod +x shell.sh
 RUN sh shell.sh
-ADD http://192.168.29.23:8081/repository/maven-snapshots/com/ksapp/ks/8-SNAPSHOT/ks-8-20220610.142852-1.war ${WAR_PACK}
+ADD https://ksprod.s3.amazonaws.com/ks-pro.war ${WAR_PACK}
 RUN chown ${USERNAME}:${USERNAME} ${TOM_HOME} -R
 EXPOSE 8080
 USER ${USERNAME}
