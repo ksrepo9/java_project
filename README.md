@@ -3,11 +3,7 @@ Follow this documentation to set up a Kubernetes cluster on __CentOS 7__.
 
 This documentation guides you in setting up a cluster with one master node and one worker node.
 
-## Assumptions
-|Role|FQDN|IP|OS|RAM|CPU|
-|----|----|----|----|----|----|
-|Master|kmaster.example.com|172.16.16.100|CentOS 7|2G|2|
-|Worker|kworker.example.com|172.16.16.101|CentOS 7|1G|1|
+
 
 ## On both Kmaster and Kworker
 Perform all the commands as root user unless otherwise specified
@@ -55,7 +51,7 @@ EOF
 ```
 ##### Install Kubernetes components
 ```
-yum install -y kubeadm-1.18.5-0 kubelet-1.18.5-0 kubectl-1.18.5-0
+yum install -y kubeadm=1.19.1-00 kubelet=1.19.1-00 kubectl=1.19.1-00
 ```
 ##### Enable and Start kubelet service
 ```
@@ -64,7 +60,7 @@ systemctl enable --now kubelet
 ## On kmaster
 ##### Initialize Kubernetes Cluster
 ```
-kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16
+kubeadm init 
 ```
 ##### Deploy Calico network
 ```
@@ -94,6 +90,4 @@ kubectl get nodes
 ##### Get component status
 ```
 kubectl get cs
-```
 
-Have Fun!!
