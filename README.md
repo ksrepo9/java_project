@@ -3,6 +3,14 @@ Follow this documentation to set up a Kubernetes cluster on __CentOS 7__.
 
 This documentation guides you in setting up a cluster with one master node and one worker node.
 
+```
+##### Host file update
+```
+cat <<EOF>> /etc/hosts
+10.0.0.1 master
+10.0.0.2 worker1
+10.0.0.3 worker2
+EOF
 
 
 ## On both Kmaster and Kworker
@@ -38,24 +46,29 @@ systemctl enable --now docker
 ### Kubernetes Setup
 ##### Add yum repository
 ```
-cat >>/etc/yum.repos.d/kubernetes.repo<<EOF
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
-        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
 EOF
+
+# Set SELinux in permissive mode (effectively disabling it)
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+
 ```
 ##### Install Kubernetes components
 ```
-yum install -y kubeadm=1.19.1-00 kubelet=1.19.1-00 kubectl=1.19.1-00
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 ```
 ##### Enable and Start kubelet service
 ```
-systemctl enable --now kubelet
+sudo systemctl enable --now kubelet
 ```
 ## On kmaster
 ##### Initialize Kubernetes Cluster
@@ -91,3 +104,9 @@ kubectl get nodes
 ```
 kubectl get cs
 
+```
+##### Troubleshooting
+```
+rm /etc/containerd/config.toml
+systemctl restart containerd
+kubeadm init
