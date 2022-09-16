@@ -11,7 +11,8 @@ cat <<EOF>> /etc/hosts
 10.0.0.2 worker1
 10.0.0.3 worker2
 EOF
-
+  
+```
 
 ## On both Kmaster and Kworker
 Perform all the commands as root user unless otherwise specified
