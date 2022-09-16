@@ -5,7 +5,6 @@ This documentation guides you in setting up a cluster with one master node and o
 
 ```
 ##### Host file update
-```
 cat <<EOF>> /etc/hosts
 10.0.0.1 master
 10.0.0.2 worker1
